@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EJOS System — Desarrollo de Software y Redes | Tuxtla Chico, Chiapas</title>
+<meta name="description" content="Sistemas de punto de venta, control administrativo, comandas, catálogos digitales, cámaras de vigilancia y redes. Cotización sin costo. Tuxtla Chico, Chiapas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink-deep:#0F2A35;
+    --ink-deep-2:#163C4A;
+    --paper:#F7F5F0;
+    --paper-dim:#EFEBE2;
+    --graphite:#2B2F33;
+    --ember:#E8631C;
+    --ember-dark:#C44E10;
+    --teal:#5FA8A0;
+    --line:rgba(15,42,53,0.12);
+    --white:#FFFFFF;
+
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:var(--font-body);
+    background:var(--paper);
+    color:var(--graphite);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:inherit;text-decoration:none;}
+  img,svg{display:block;max-width:100%;}
+
+  .wrap{
+    max-width:1140px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  /* ---------- focus visibility ---------- */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--ember);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* ================= HEADER ================= */
+  header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(15,42,53,0.97);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:72px;
+  }
+  .brand{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:1.25rem;
+    color:var(--white);
+    letter-spacing:0.01em;
+  }
+  .brand .dot{color:var(--ember);}
+  .brand small{
+    font-family:var(--font-body);
+    font-weight:500;
+    font-size:0.62rem;
+    color:rgba(255,255,255,0.55);
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    display:block;
+  }
+  nav.links{
+    display:flex;
+    gap:32px;
+    font-size:0.92rem;
+    font-weight:500;
+  }
+  nav.links a{
+    color:rgba(255,255,255,0.78);
+    transition:color .15s ease;
+  }
+  nav.links a:hover{color:var(--white);}
+  .nav-cta{
+    background:var(--ember);
+    color:var(--white);
+    padding:10px 20px;
+    border-radius:6px;
+    font-weight:600;
+    font-size:0.88rem;
+    white-space:nowrap;
+    transition:background .15s ease;
+  }
+  .nav-cta:hover{background:var(--ember-dark);}
+  .nav-toggle{display:none;}
+
+  @media (max-width:780px){
+    nav.links{display:none;}
+    .nav-cta{padding:9px 14px;font-size:0.8rem;}
+  }
+
+  /* ================= HERO ================= */
+  .hero{
+    position:relative;
+    background:linear-gradient(165deg, var(--ink-deep) 0%, var(--ink-deep-2) 60%, #1B4756 100%);
+    color:var(--white);
+    overflow:hidden;
+    padding:88px 0 96px;
+  }
+  .hero .wrap{
+    position:relative;
+    z-index:2;
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:48px;
+    align-items:center;
+  }
+  .hero-eyebrow{
+    font-size:0.78rem;
+    font-weight:600;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-family:var(--font-display);
+    font-size:clamp(2.1rem, 4vw, 3.1rem);
+    line-height:1.12;
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--ember);
+  }
+  .hero p.lead{
+    margin-top:20px;
+    font-size:1.08rem;
+    color:rgba(255,255,255,0.82);
+    max-width:520px;
+  }
+  .hero-actions{
+    margin-top:32px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:14px 26px;
+    border-radius:7px;
+    font-weight:600;
+    font-size:0.95rem;
+    transition:transform .15s ease, background .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{
+    background:var(--ember);
+    color:var(--white);
+    box-shadow:0 8px 20px -8px rgba(232,99,28,0.6);
+  }
+  .btn-primary:hover{background:var(--ember-dark); transform:translateY(-1px);}
+  .btn-ghost{
+    background:transparent;
+    color:var(--white);
+    border:1.5px solid rgba(255,255,255,0.35);
+  }
+  .btn-ghost:hover{border-color:rgba(255,255,255,0.7); transform:translateY(-1px);}
+
+  .hero-meta{
+    margin-top:36px;
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+    font-size:0.84rem;
+    color:rgba(255,255,255,0.65);
+  }
+  .hero-meta strong{color:var(--white); font-weight:600;}
+
+  /* circuit diagram visual */
+  .circuit-box{
+    position:relative;
+    z-index:2;
+  }
+  .circuit-box svg{width:100%; height:auto;}
+
+  .hero-bg-grid{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    opacity:0.18;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image:radial-gradient(ellipse 70% 70% at 70% 30%, black, transparent);
+  }
+
+  @media (max-width:880px){
+    .hero .wrap{grid-template-columns:1fr; text-align:left;}
+    .circuit-box{display:none;}
+  }
+
+  /* ================= SECTION SHELLS ================= */
+  section{padding:88px 0;}
+  .section-head{
+    max-width:640px;
+    margin-bottom:52px;
+  }
+  .section-eyebrow{
+    font-size:0.76rem;
+    font-weight:700;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ember-dark);
+    margin-bottom:12px;
+  }
+  .section-head h2{
+    font-family:var(--font-display);
+    font-size:clamp(1.6rem, 3vw, 2.1rem);
+    font-weight:700;
+    color:var(--ink-deep);
+    letter-spacing:-0.01em;
+  }
+  .section-head p{
+    margin-top:14px;
+    color:#52595E;
+    font-size:1.02rem;
+  }
+
+  .divider-line{
+    border:none;
+    border-top:1px solid var(--line);
+  }
+
+  /* ================= SERVICIOS ================= */
+  .services-bg{background:var(--white);}
+  .service-cols{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+  }
+  @media (max-width:780px){
+    .service-cols{grid-template-columns:1fr;}
+  }
+  .service-card{
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:36px 32px;
+    background:var(--paper);
+    position:relative;
+    overflow:hidden;
+  }
+  .service-card.accent-soft{border-top:4px solid var(--teal);}
+  .service-card.accent-ember{border-top:4px solid var(--ember);}
+
+  .service-card .tag{
+    display:inline-block;
+    font-size:0.72rem;
+    font-weight:700;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--ink-deep);
+    background:rgba(95,168,160,0.18);
+    padding:5px 10px;
+    border-radius:5px;
+    margin-bottom:18px;
+  }
+  .service-card.accent-ember .tag{
+    background:rgba(232,99,28,0.13);
+  }
+
+  .service-card h3{
+    font-family:var(--font-display);
+    font-size:1.4rem;
+    font-weight:700;
+    color:var(--ink-deep);
+    margin-bottom:10px;
+  }
+  .service-card > p{
+    color:#52595E;
+    font-size:0.96rem;
+    margin-bottom:22px;
+  }
+  .service-list{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:11px;
+  }
+  .service-list li{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:0.93rem;
+    color:var(--graphite);
+  }
+  .service-list li svg{flex-shrink:0; margin-top:3px;}
+
+  /* ================= PROYECTOS ================= */
+  .projects-bg{background:var(--paper-dim);}
+  .project-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:24px;
+  }
+  @media (max-width:780px){
+    .project-grid{grid-template-columns:1fr;}
+  }
+  .project-card{
+    background:var(--white);
+    border-radius:12px;
+    padding:30px 28px;
+    border:1px solid var(--line);
+    transition:box-shadow .2s ease, transform .2s ease;
+  }
+  .project-card:hover{
+    box-shadow:0 16px 32px -16px rgba(15,42,53,0.18);
+    transform:translateY(-3px);
+  }
+  .project-status{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:0.7rem;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:#2E8B57;
+    margin-bottom:14px;
+  }
+  .project-status .pulse{
+    width:7px;height:7px;border-radius:50%;background:#2E8B57;
+    box-shadow:0 0 0 0 rgba(46,139,87,0.6);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(46,139,87,0.45);}
+    70%{box-shadow:0 0 0 6px rgba(46,139,87,0);}
+    100%{box-shadow:0 0 0 0 rgba(46,139,87,0);}
+  }
+  .project-card h3{
+    font-family:var(--font-display);
+    font-size:1.18rem;
+    font-weight:700;
+    color:var(--ink-deep);
+    margin-bottom:6px;
+  }
+  .project-stack{
+    font-size:0.78rem;
+    color:var(--ember-dark);
+    font-weight:600;
+    margin-bottom:16px;
+  }
+  .project-card ul{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .project-card ul li{
+    font-size:0.89rem;
+    color:#52595E;
+    padding-left:16px;
+    position:relative;
+  }
+  .project-card ul li::before{
+    content:'';
+    position:absolute;
+    left:0;
+    top:9px;
+    width:6px;
+    height:1.5px;
+    background:var(--teal);
+  }
+
+  /* ================= POR QUE EJOS ================= */
+  .why-bg{background:var(--ink-deep); color:var(--white);}
+  .why-bg .section-eyebrow{color:var(--teal);}
+  .why-bg .section-head h2{color:var(--white);}
+  .why-bg .section-head p{color:rgba(255,255,255,0.72);}
+
+  .why-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:0;
+    border-top:1px solid rgba(255,255,255,0.12);
+    border-left:1px solid rgba(255,255,255,0.12);
+  }
+  @media (max-width:900px){
+    .why-grid{grid-template-columns:repeat(2, 1fr);}
+  }
+  @media (max-width:560px){
+    .why-grid{grid-template-columns:1fr;}
+  }
+  .why-item{
+    padding:30px 26px;
+    border-right:1px solid rgba(255,255,255,0.12);
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .why-item h4{
+    font-family:var(--font-display);
+    font-size:1.02rem;
+    font-weight:600;
+    margin-bottom:8px;
+    color:var(--white);
+  }
+  .why-item p{
+    font-size:0.88rem;
+    color:rgba(255,255,255,0.65);
+  }
+
+  /* ================= PROCESO ================= */
+  .process-bg{background:var(--white);}
+  .process-row{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:24px;
+  }
+  @media (max-width:880px){
+    .process-row{grid-template-columns:repeat(2, 1fr);}
+  }
+  @media (max-width:560px){
+    .process-row{grid-template-columns:1fr;}
+  }
+  .process-step{position:relative; padding-top:8px;}
+  .process-num{
+    font-family:var(--font-display);
+    font-size:0.82rem;
+    font-weight:700;
+    color:var(--ember);
+    letter-spacing:0.05em;
+    margin-bottom:12px;
+  }
+  .process-step h4{
+    font-family:var(--font-display);
+    font-size:1.05rem;
+    font-weight:700;
+    color:var(--ink-deep);
+    margin-bottom:8px;
+  }
+  .process-step p{font-size:0.89rem; color:#52595E;}
+
+  /* ================= CONTACTO ================= */
+  .contact-bg{
+    background:linear-gradient(160deg, var(--ink-deep) 0%, #1B4756 100%);
+    color:var(--white);
+    position:relative;
+    overflow:hidden;
+  }
+  .contact-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:48px;
+  }
+  @media (max-width:880px){
+    .contact-grid{grid-template-columns:1fr;}
+  }
+  .contact-bg .section-eyebrow{color:var(--teal);}
+  .contact-bg h2{
+    font-family:var(--font-display);
+    font-size:clamp(1.7rem, 3.4vw, 2.3rem);
+    font-weight:700;
+    line-height:1.2;
+  }
+  .contact-bg .lead{
+    margin-top:16px;
+    color:rgba(255,255,255,0.78);
+    font-size:1.02rem;
+    max-width:480px;
+  }
+  .contact-points{
+    margin-top:30px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .contact-points div{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    font-size:0.92rem;
+    color:rgba(255,255,255,0.85);
+  }
+
+  .contact-card{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.14);
+    border-radius:16px;
+    padding:36px;
+    backdrop-filter:blur(4px);
+  }
+  .contact-card h3{
+    font-family:var(--font-display);
+    font-size:1.15rem;
+    margin-bottom:22px;
+  }
+  .contact-row{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    padding:14px 0;
+    border-bottom:1px solid rgba(255,255,255,0.1);
+  }
+  .contact-row:last-child{border-bottom:none;}
+  .contact-row .ico{
+    width:38px;height:38px;
+    border-radius:8px;
+    background:rgba(232,99,28,0.18);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .contact-row .label{
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:rgba(255,255,255,0.5);
+    margin-bottom:3px;
+  }
+  .contact-row .value{
+    font-size:0.96rem;
+    font-weight:600;
+    color:var(--white);
+  }
+  .contact-row a.value:hover{color:var(--ember);}
+
+  .whatsapp-btn{
+    margin-top:24px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    background:#1FAA59;
+    color:var(--white);
+    padding:15px;
+    border-radius:8px;
+    font-weight:700;
+    font-size:0.98rem;
+    width:100%;
+    transition:background .15s ease;
+  }
+  .whatsapp-btn:hover{background:#178a48;}
+
+  /* ================= FOOTER ================= */
+  footer{
+    background:#0A1F27;
+    color:rgba(255,255,255,0.55);
+    padding:32px 0;
+    font-size:0.84rem;
+  }
+  .footer-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  footer .brand-mini{
+    font-family:var(--font-display);
+    font-weight:700;
+    color:rgba(255,255,255,0.85);
+  }
+  footer .brand-mini .dot{color:var(--ember);}
+
+  /* small section eyebrow inside paper sections */
+  .projects-bg .section-eyebrow,
+  .services-bg .section-eyebrow,
+  .process-bg .section-eyebrow{color:var(--ember-dark);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand">EJOS<span class="dot">·</span>SYSTEM
+      <small>Simplicidad. Velocidad. Control.</small>
+    </div>
+    <nav class="links">
+      <a href="#servicios">Servicios</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#proceso">Cómo trabajo</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <a class="nav-cta" href="#contacto">Cotizar gratis</a>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="wrap">
+    <div>
+      <div class="hero-eyebrow">Ingeniería en Sistemas · Tuxtla Chico, Chiapas</div>
+      <h1>Software a la medida y redes que <em>sí funcionan</em> para tu negocio</h1>
+      <p class="lead">
+        Diseño e implemento sistemas de punto de venta, control administrativo, comandas y catálogos digitales.
+        También instalo cámaras de vigilancia, redes y pantallas. Todo bajo un mismo responsable, de inicio a soporte.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://wa.me/529622191759?text=Hola%2C%20quiero%20pedir%20informaci%C3%B3n%20sobre%20sus%20servicios" target="_blank" rel="noopener">
+          Escribir por WhatsApp
+        </a>
+        <a class="btn btn-ghost" href="#proyectos">Ver proyectos realizados</a>
+      </div>
+      <div class="hero-meta">
+        <span><strong>4+</strong> sistemas en operación activa</span>
+        <span><strong>0 costo</strong> en preguntas y cotizaciones</span>
+        <span><strong>Soconusco</strong> y municipios cercanos</span>
+      </div>
+    </div>
+
+    <div class="circuit-box">
+      <svg viewBox="0 0 420 380" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama de conexión entre software y redes">
+        <!-- connecting lines -->
+        <g stroke="#5FA8A0" stroke-width="1.4" opacity="0.55">
+          <path d="M70 90 L150 90 L150 150" />
+          <path d="M150 150 L240 150 L240 90 L330 90" />
+          <path d="M150 150 L150 230 L70 230" />
+          <path d="M150 230 L150 300" />
+          <path d="M240 150 L240 230 L330 230" />
+          <path d="M240 230 L240 300" />
+          <path d="M330 90 L330 50" />
+          <path d="M330 230 L330 280" />
+        </g>
+        <!-- nodes -->
+        <g>
+          <circle cx="70" cy="90" r="6" fill="#E8631C"/>
+          <circle cx="150" cy="90" r="4" fill="#F7F5F0"/>
+          <circle cx="150" cy="150" r="6" fill="#5FA8A0"/>
+          <circle cx="240" cy="150" r="4" fill="#F7F5F0"/>
+          <circle cx="240" cy="90" r="4" fill="#F7F5F0"/>
+          <circle cx="330" cy="90" r="6" fill="#E8631C"/>
+          <circle cx="330" cy="50" r="4" fill="#F7F5F0"/>
+          <circle cx="70" cy="230" r="6" fill="#5FA8A0"/>
+          <circle cx="150" cy="230" r="4" fill="#F7F5F0"/>
+          <circle cx="150" cy="300" r="6" fill="#E8631C"/>
+          <circle cx="240" cy="230" r="4" fill="#F7F5F0"/>
+          <circle cx="240" cy="300" r="6" fill="#5FA8A0"/>
+          <circle cx="330" cy="230" r="4" fill="#F7F5F0"/>
+          <circle cx="330" cy="280" r="6" fill="#E8631C"/>
+        </g>
+        <!-- labels -->
+        <g fill="#F7F5F0" font-family="Inter, sans-serif" font-size="11" opacity="0.85">
+          <text x="40" y="75">POS</text>
+          <text x="300" y="40">Cámaras</text>
+          <text x="40" y="250">Comandas</text>
+          <text x="305" y="265">Red local</text>
+          <text x="118" y="320">Reportes</text>
+          <text x="208" y="320">Pantallas</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SERVICIOS ================= -->
+<section id="servicios" class="services-bg">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">Lo que hago</div>
+      <h2>Dos especialidades, un solo proveedor de confianza</h2>
+      <p>Resuelvo la parte digital de tu negocio (el software que controla ventas e inventario) y la parte física que lo sostiene (cámaras, redes y pantallas). No tienes que contratar a alguien distinto para cada cosa.</p>
+    </div>
+
+    <div class="service-cols">
+      <div class="service-card accent-ember">
+        <span class="tag">Desarrollo de software</span>
+        <h3>Sistemas que ordenan tu negocio</h3>
+        <p>Aplicaciones a la medida para controlar ventas, inventario, clientes y operación diaria, sin depender de hojas de cálculo ni cuadernos.</p>
+        <ul class="service-list">
+          <li><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#E8631C" opacity="0.15"/><path d="M5 8l2 2 4-4" stroke="#E8631C" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Puntos de venta (POS) para comercios y tiendas</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#E8631C" opacity="0.15"/><path d="M5 8l2 2 4-4" stroke="#E8631C" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Sistemas de comandas para restaurantes</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#E8631C" opacity="0.15"/><path d="M5 8l2 2 4-4" stroke="#E8631C" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Control administrativo de inventarios y clientes</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#E8631C" opacity="0.15"/><path d="M5 8l2 2 4-4" stroke="#E8631C" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Catálogos digitales y sistemas de pedidos</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#E8631C" opacity="0.15"/><path d="M5 8l2 2 4-4" stroke="#E8631C" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Reportes administrativos a la medida</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#E8631C" opacity="0.15"/><path d="M5 8l2 2 4-4" stroke="#E8631C" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Soporte y mantenimiento continuo</li>
+        </ul>
+      </div>
+
+      <div class="service-card accent-soft">
+        <span class="tag">Redes y telecomunicaciones</span>
+        <h3>Infraestructura que mantiene todo conectado</h3>
+        <p>Instalación y configuración de la parte física: vigilancia, conexión y pantallas, con trabajo limpio y funcional desde el primer día.</p>
+        <ul class="service-list">
+          <li><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#5FA8A0" opacity="0.2"/><path d="M5 8l2 2 4-4" stroke="#3D7D75" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Instalación de cámaras de vigilancia</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#5FA8A0" opacity="0.2"/><path d="M5 8l2 2 4-4" stroke="#3D7D75" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Redes locales para casa, oficina o negocio</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#5FA8A0" opacity="0.2"/><path d="M5 8l2 2 4-4" stroke="#3D7D75" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Configuración de redes de computadoras</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#5FA8A0" opacity="0.2"/><path d="M5 8l2 2 4-4" stroke="#3D7D75" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Instalación de pantallas y equipos</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#5FA8A0" opacity="0.2"/><path d="M5 8l2 2 4-4" stroke="#3D7D75" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Diagnóstico y corrección de fallas de conexión</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#5FA8A0" opacity="0.2"/><path d="M5 8l2 2 4-4" stroke="#3D7D75" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Asesoría para elegir el equipo correcto</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROYECTOS ================= -->
+<section id="proyectos" class="projects-bg">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">Proyectos destacados</div>
+      <h2>Sistemas en funcionamiento, hoy</h2>
+      <p>No son maquetas ni prototipos: son sistemas que negocios reales usan todos los días para vender, controlar inventario y administrar su operación.</p>
+    </div>
+
+    <div class="project-grid">
+      <div class="project-card">
+        <div class="project-status"><span class="pulse"></span>En operación activa</div>
+        <h3>Sistema Punto de Venta Comercial — EJOS System</h3>
+        <div class="project-stack">C# · .NET · MySQL</div>
+        <ul>
+          <li>Implementado en múltiples negocios locales</li>
+          <li>Gestión de ventas, inventarios, clientes y reportes</li>
+          <li>Soporte y mantenimiento continuo para clientes activos</li>
+        </ul>
+      </div>
+
+      <div class="project-card">
+        <div class="project-status"><span class="pulse"></span>En operación activa</div>
+        <h3>Sistema para Taller y Refaccionaria — La Chopper</h3>
+        <div class="project-stack">PHP · JavaScript · HTML · CSS · MySQL</div>
+        <ul>
+          <li>Administración de órdenes de servicio, inventario y refacciones</li>
+          <li>Gestión de clientes y seguimiento de trabajos realizados</li>
+          <li>Generación de reportes operativos y administrativos</li>
+        </ul>
+      </div>
+
+      <div class="project-card">
+        <div class="project-status"><span class="pulse"></span>En operación activa</div>
+        <h3>Sistema de Administración Organizacional para una Iglesia</h3>
+        <div class="project-stack">PHP · MySQL</div>
+        <ul>
+          <li>Módulos para gestión de miembros y registros</li>
+          <li>Control administrativo centralizado</li>
+          <li>Consulta eficiente de información</li>
+        </ul>
+      </div>
+
+      <div class="project-card">
+        <div class="project-status"><span class="pulse"></span>En operación activa</div>
+        <h3>Sistema Integral Empresarial — Tienda Multidisciplinaria del Soconusco</h3>
+        <div class="project-stack">Java · MySQL</div>
+        <ul>
+          <li>Desarrollo basado en Programación Orientada a Objetos</li>
+          <li>Gestión de usuarios, registros y procesos administrativos</li>
+          <li>Integración con bases de datos relacionales y reportes</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= POR QUE EJOS ================= -->
+<section class="why-bg">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">Por qué trabajar conmigo</div>
+      <h2>Un solo responsable, del diagnóstico al soporte</h2>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-item">
+        <h4>Trato directo</h4>
+        <p>Hablas conmigo, no con un call center. Yo diseño, yo instalo, yo doy soporte.</p>
+      </div>
+      <div class="why-item">
+        <h4>Cotización sin costo</h4>
+        <p>Preguntas y cotizaciones siempre gratuitas, sin compromiso de compra.</p>
+      </div>
+      <div class="why-item">
+        <h4>Soporte después de entregar</h4>
+        <p>El sistema no se queda solo: doy mantenimiento continuo a clientes activos.</p>
+      </div>
+      <div class="why-item">
+        <h4>Cobertura regional</h4>
+        <p>Con base en Tuxtla Chico y disponibilidad en distintos municipios del Soconusco.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROCESO ================= -->
+<section id="proceso" class="process-bg">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">Cómo trabajo</div>
+      <h2>De la idea al sistema funcionando</h2>
+    </div>
+
+    <div class="process-row">
+      <div class="process-step">
+        <div class="process-num">Paso 1</div>
+        <h4>Diagnóstico</h4>
+        <p>Conversamos sobre lo que tu negocio necesita controlar o conectar.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-num">Paso 2</div>
+        <h4>Cotización</h4>
+        <p>Te entrego una propuesta clara de alcance, tiempo y costo, sin letras chiquitas.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-num">Paso 3</div>
+        <h4>Desarrollo o instalación</h4>
+        <p>Construyo el sistema o instalo el equipo, manteniéndote informado del avance.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-num">Paso 4</div>
+        <h4>Entrega y soporte</h4>
+        <p>Capacitación de uso y acompañamiento continuo después de la entrega.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACTO ================= -->
+<section id="contacto" class="contact-bg">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div>
+        <div class="section-eyebrow">Hablemos de tu proyecto</div>
+        <h2>Pregunta y cotiza sin ningún costo</h2>
+        <p class="lead">Cuéntame qué necesitas controlar, vender o conectar. Te respondo directamente y te explico las opciones sin presión de compra.</p>
+        <div class="contact-points">
+          <div>📍 Tuxtla Chico, Chiapas — con disponibilidad en municipios de la región del Soconusco.</div>
+          <div>💬 Respuesta directa por WhatsApp, sin intermediarios.</div>
+          <div>🛠️ Soporte continuo después de la entrega del sistema o instalación.</div>
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <h3>Elías Jesé Ochoa Corzo</h3>
+        <div class="contact-row">
+          <div class="ico">💬</div>
+          <div>
+            <div class="label">WhatsApp</div>
+            <a class="value" href="https://wa.me/529622191759" target="_blank" rel="noopener">962 219 1759</a>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="ico">📞</div>
+          <div>
+            <div class="label">Llamadas</div>
+            <a class="value" href="tel:+529621328643">962 132 8643</a> &nbsp;/&nbsp;
+            <a class="value" href="tel:+529621492412">962 149 2412</a>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="ico">✉️</div>
+          <div>
+            <div class="label">Correo</div>
+            <a class="value" href="mailto:ochoacorzoeliasjese@gmail.com">ochoacorzoeliasjese@gmail.com</a>
+          </div>
+        </div>
+        <a class="whatsapp-btn" href="https://wa.me/529622191759?text=Hola%2C%20quiero%20pedir%20informaci%C3%B3n%20sobre%20sus%20servicios" target="_blank" rel="noopener">
+          Escribir ahora por WhatsApp →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="brand-mini">EJOS<span class="dot">·</span>SYSTEM</div>
+    <div>Ingeniería en Sistemas Computacionales · Tuxtla Chico, Chiapas · © 2026</div>
+  </div>
+</footer>
+
+</body>
+</html>
